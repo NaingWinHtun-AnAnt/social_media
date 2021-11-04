@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:social_media/blocs/news_feed_bloc.dart';
+import 'package:social_media/pages/add_new_post_page.dart';
 import 'package:social_media/resources/dimens.dart';
 import 'package:social_media/viewitems/news_feed_item_view.dart';
 
@@ -15,10 +16,10 @@ class HomePage extends StatelessWidget {
           elevation: 0.0,
           backgroundColor: Colors.white,
           title: Container(
-            margin: const EdgeInsets.only(
+            margin: EdgeInsets.only(
               left: MARGIN_MEDIUM,
             ),
-            child: const Text(
+            child: Text(
               "Social",
               style: TextStyle(
                 fontWeight: FontWeight.bold,
@@ -31,10 +32,10 @@ class HomePage extends StatelessWidget {
             GestureDetector(
               onTap: () {},
               child: Container(
-                margin: const EdgeInsets.only(
+                margin: EdgeInsets.only(
                   right: MARGIN_LARGE,
                 ),
-                child: const Icon(
+                child: Icon(
                   Icons.search,
                   color: Colors.grey,
                   size: MARGIN_LARGE,
@@ -47,7 +48,7 @@ class HomePage extends StatelessWidget {
           color: Colors.white,
           child: Consumer<NewsFeedBloc>(
             builder: (context, bloc, child) => ListView.separated(
-              padding: const EdgeInsets.symmetric(
+              padding: EdgeInsets.symmetric(
                 vertical: MARGIN_LARGE,
                 horizontal: MARGIN_LARGE,
               ),
@@ -57,7 +58,7 @@ class HomePage extends StatelessWidget {
                 );
               },
               separatorBuilder: (context, index) {
-                return const SizedBox(
+                return SizedBox(
                   height: MARGIN_XLARGE,
                 );
               },
@@ -65,6 +66,22 @@ class HomePage extends StatelessWidget {
             ),
           ),
         ),
+        floatingActionButton: FloatingActionButton(
+          backgroundColor: Colors.black87,
+          onPressed: () => _navigateToAddNewPostPage(context),
+          child: Icon(
+            Icons.add,
+            color: Colors.white,
+          ),
+        ),
+      ),
+    );
+  }
+
+  void _navigateToAddNewPostPage(BuildContext context) {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => AddNewPostPage(),
       ),
     );
   }

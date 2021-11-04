@@ -13,6 +13,7 @@ class NewsFeedItemView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Row(
           children: [
@@ -29,19 +30,19 @@ class NewsFeedItemView extends StatelessWidget {
             MoreButtonView(),
           ],
         ),
-        const SizedBox(
+        SizedBox(
           height: MARGIN_MEDIUM_2,
         ),
         PostImageView(
           postImage: mNewsFeed?.postImage ?? "",
         ),
-        const SizedBox(
+        SizedBox(
           height: MARGIN_MEDIUM_2,
         ),
         PostDescriptionView(
           description: mNewsFeed?.description ?? "",
         ),
-        const SizedBox(
+        SizedBox(
           height: MARGIN_MEDIUM_2,
         ),
         Row(
@@ -100,20 +101,23 @@ class PostImageView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(
-        MARGIN_CARD_MEDIUM_2,
-      ),
-      child: FadeInImage(
-        height: POST_IMAGE_HEIGHT,
-        width: double.infinity,
-        placeholder: NetworkImage(
-          NETWORK_IMAGE_POST_PLACEHOLDER,
+    return Visibility(
+      visible: postImage != "",
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(
+          MARGIN_CARD_MEDIUM_2,
         ),
-        image: NetworkImage(
-          postImage,
+        child: FadeInImage(
+          height: POST_IMAGE_HEIGHT,
+          width: double.infinity,
+          placeholder: NetworkImage(
+            NETWORK_IMAGE_POST_PLACEHOLDER,
+          ),
+          image: NetworkImage(
+            postImage,
+          ),
+          fit: BoxFit.fill,
         ),
-        fit: BoxFit.fill,
       ),
     );
   }
