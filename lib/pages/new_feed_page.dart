@@ -56,6 +56,11 @@ class NewFeedPage extends StatelessWidget {
               itemBuilder: (context, index) {
                 return NewsFeedItemView(
                   mNewsFeed: bloc.newsFeed?[index],
+                  onTapEditPost: (postId) {
+                    Future.delayed(Duration(seconds: 1)).then(
+                      (value) => _navigateToEditPostPage(context, postId),
+                    );
+                  },
                   onTapDeletePost: (postId) {
                     bloc.onTapDelete(postId);
                   },
@@ -86,6 +91,16 @@ class NewFeedPage extends StatelessWidget {
     Navigator.of(context).push(
       MaterialPageRoute(
         builder: (context) => AddNewPostPage(),
+      ),
+    );
+  }
+
+  void _navigateToEditPostPage(BuildContext context, int postId) {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => AddNewPostPage(
+          postId: postId,
+        ),
       ),
     );
   }

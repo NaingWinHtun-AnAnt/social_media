@@ -6,10 +6,16 @@ import 'package:social_media/resources/strings.dart';
 import 'package:social_media/widgets/profile_image_view.dart';
 
 class AddNewPostPage extends StatelessWidget {
+  final int? postId;
+
+  AddNewPostPage({
+    this.postId,
+  });
+
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (context) => AddNewPostBloc(),
+      create: (context) => AddNewPostBloc(postId),
       child: Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
@@ -56,9 +62,7 @@ class AddNewPostPage extends StatelessWidget {
                 SizedBox(
                   height: MARGIN_MEDIUM,
                 ),
-                PostDescriptionErrorView(
-                  isError: false,
-                ),
+                PostDescriptionErrorView(),
                 SizedBox(
                   height: MARGIN_LARGE,
                 ),
@@ -73,22 +77,19 @@ class AddNewPostPage extends StatelessWidget {
 }
 
 class PostDescriptionErrorView extends StatelessWidget {
-  final bool isError;
-
-  PostDescriptionErrorView({
-    required this.isError,
-  });
-
   @override
   Widget build(BuildContext context) {
-    return Visibility(
-      visible: false,
-      child: Text(
-        POST_DESCRIPTION_EMPTY_ERROR,
-        style: TextStyle(
-          color: Colors.red,
-          fontSize: TEXT_REGULAR,
-          fontWeight: FontWeight.w500,
+    return Consumer<AddNewPostBloc>(
+      builder: (BuildContext context, AddNewPostBloc bloc, Widget? child) =>
+          Visibility(
+        visible: bloc.isAddNewPostError,
+        child: Text(
+          POST_DESCRIPTION_EMPTY_ERROR,
+          style: TextStyle(
+            color: Colors.red,
+            fontSize: TEXT_REGULAR,
+            fontWeight: FontWeight.w500,
+          ),
         ),
       ),
     );
@@ -134,24 +135,26 @@ class PostButtonView extends StatelessWidget {
 class ProfileImageAndNameView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: [
-        ProfileImageView(
-          profileImage:
-              "https://assets.manutd.com/AssetPicker/images/0/0/10/126/687707/Legends-Profile_Cristiano-Ronaldo1523460877263.jpg",
-        ),
-        SizedBox(
-          width: MARGIN_MEDIUM_2,
-        ),
-        Text(
-          "Naing Win Htun",
-          style: TextStyle(
-            fontSize: TEXT_REGULAR_2X,
-            color: Colors.black,
-            fontWeight: FontWeight.bold,
+    return Consumer<AddNewPostBloc>(
+      builder: (BuildContext context, AddNewPostBloc bloc, Widget? child) =>
+          Row(
+        children: [
+          ProfileImageView(
+            profileImage: bloc.profilePicture,
           ),
-        ),
-      ],
+          SizedBox(
+            width: MARGIN_MEDIUM_2,
+          ),
+          Text(
+            bloc.userName,
+            style: TextStyle(
+              fontSize: TEXT_REGULAR_2X,
+              color: Colors.black,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
@@ -166,6 +169,7 @@ class AddNewPostTextFieldView extends StatelessWidget {
         child: TextField(
           maxLines: 24,
           onChanged: (text) => bloc.onNewPostTextChanged(text),
+          controller: TextEditingController(text: bloc.description),
           decoration: InputDecoration(
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(

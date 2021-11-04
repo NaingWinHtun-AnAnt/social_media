@@ -6,4 +6,6 @@ abstract class SocialDataAgent {
   Future<void> createNewPost(NewsFeedVO newsFeed);
 
   Future<void> deletePost(int postId);
+
+  Stream<NewsFeedVO> getNewFeedById(int postId);
 }

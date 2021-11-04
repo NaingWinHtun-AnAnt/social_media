@@ -39,4 +39,18 @@ class RealtimeDatabaseDataAgentImpl extends SocialDataAgent {
   Future<void> deletePost(int postId) {
     return databaseRef.child(newsFeedPath).child("$postId").remove();
   }
+
+  @override
+  Stream<NewsFeedVO> getNewFeedById(int postId) {
+    return databaseRef
+        .child(newsFeedPath)
+        .child("$postId")
+        .once()
+        .asStream()
+        .map(
+          (snapShop) => NewsFeedVO.fromJson(
+            Map<String, dynamic>.from(snapShop.value),
+          ),
+        );
+  }
 }

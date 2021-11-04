@@ -5,5 +5,9 @@ abstract class SocialModel {
 
   Future<void> createNewPost(String description);
 
+  Future<void> editPost(NewsFeedVO newFeed);
+
   Future<void> deletePost(int String);
+
+  Stream<NewsFeedVO> getNewFeedById(int postId);
 }

@@ -3,6 +3,8 @@ const ADD_NEW_POST = "Add New Post";
 
 /// actions
 const ACTION_POST = "POST";
+const EDIT_POST = "Edit";
+const DELETE_POST = "Delete";
 
 /// hints
 const POST_DESCRIPTION_HINT = "What's on your mind?";

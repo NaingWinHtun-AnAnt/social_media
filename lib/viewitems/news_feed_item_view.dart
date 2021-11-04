@@ -2,13 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:social_media/data/vos/news_feed_vo.dart';
 import 'package:social_media/resources/dimens.dart';
 import 'package:social_media/resources/images.dart';
+import 'package:social_media/resources/strings.dart';
 
 class NewsFeedItemView extends StatelessWidget {
   final NewsFeedVO? mNewsFeed;
+  final Function(int) onTapEditPost;
   final Function(int) onTapDeletePost;
 
   const NewsFeedItemView({
     required this.mNewsFeed,
+    required this.onTapEditPost,
     required this.onTapDeletePost,
   });
 
@@ -30,6 +33,7 @@ class NewsFeedItemView extends StatelessWidget {
             ),
             Spacer(),
             MoreButtonView(
+              onTapEdit: () => onTapEditPost(mNewsFeed?.id ?? 0),
               onTapDelete: () => onTapDeletePost(mNewsFeed?.id ?? 0),
             ),
           ],
@@ -128,9 +132,11 @@ class PostImageView extends StatelessWidget {
 }
 
 class MoreButtonView extends StatelessWidget {
+  final Function onTapEdit;
   final Function onTapDelete;
 
   MoreButtonView({
+    required this.onTapEdit,
     required this.onTapDelete,
   });
 
@@ -143,11 +149,12 @@ class MoreButtonView extends StatelessWidget {
       ),
       itemBuilder: (BuildContext context) => [
         PopupMenuItem(
-          child: Text("Edit"),
+          child: Text(EDIT_POST),
+          onTap: () => onTapEdit(),
         ),
         PopupMenuItem(
           onTap: () => onTapDelete(),
-          child: Text("Delete"),
+          child: Text(DELETE_POST),
         ),
       ],
     );
