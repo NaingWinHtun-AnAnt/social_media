@@ -3,9 +3,10 @@ import 'package:provider/provider.dart';
 import 'package:social_media/blocs/news_feed_bloc.dart';
 import 'package:social_media/pages/add_new_post_page.dart';
 import 'package:social_media/resources/dimens.dart';
+import 'package:social_media/resources/strings.dart';
 import 'package:social_media/viewitems/news_feed_item_view.dart';
 
-class HomePage extends StatelessWidget {
+class NewFeedPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
@@ -20,7 +21,7 @@ class HomePage extends StatelessWidget {
               left: MARGIN_MEDIUM,
             ),
             child: Text(
-              "Social",
+              SOCIAL,
               style: TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: TEXT_HEADING_1X,
@@ -55,6 +56,9 @@ class HomePage extends StatelessWidget {
               itemBuilder: (context, index) {
                 return NewsFeedItemView(
                   mNewsFeed: bloc.newsFeed?[index],
+                  onTapDeletePost: (postId) {
+                    bloc.onTapDelete(postId);
+                  },
                 );
               },
               separatorBuilder: (context, index) {

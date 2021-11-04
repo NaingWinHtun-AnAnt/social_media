@@ -1,3 +1,4 @@
+const SOCIAL = "Social";
 const ADD_NEW_POST = "Add New Post";
 
 /// actions
