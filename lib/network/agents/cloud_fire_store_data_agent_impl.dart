@@ -23,14 +23,20 @@ class CloudFireStoreDataAgentImpl extends SocialDataAgent {
 
   @override
   Future<void> deletePost(int postId) {
-    // TODO: implement deletePost
-    throw UnimplementedError();
+    return _fireStore.collection(NEW_FEED).doc("$postId").delete();
   }
 
   @override
   Stream<NewsFeedVO> getNewFeedById(int postId) {
-    // TODO: implement getNewFeedById
-    throw UnimplementedError();
+    return _fireStore
+        .collection(NEW_FEED)
+        .doc("$postId")
+        .get()
+        .asStream()
+        .where((documentSnapShot) => documentSnapShot.data() != null)
+        .map(
+          (event) => NewsFeedVO.fromJson(event.data()!),
+        );
   }
 
   @override
