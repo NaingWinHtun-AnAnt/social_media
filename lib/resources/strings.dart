@@ -1,3 +1,4 @@
+const APP_NAME = "Social Media";
 const SOCIAL = "Social";
 const ADD_NEW_POST = "Add New Post";
 

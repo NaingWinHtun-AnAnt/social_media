@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:social_media/pages/new_feed_page.dart';
+import 'package:social_media/resources/strings.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -14,7 +15,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Social Media',
+      title: APP_NAME,
       theme: ThemeData(
         primarySwatch: Colors.blue,
         // fontFamily: GoogleFonts.ubuntu().fontFamily,
