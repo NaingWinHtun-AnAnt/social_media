@@ -1,6 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:social_media/pages/new_feed_page.dart';
+import 'package:social_media/pages/login_page.dart';
 import 'package:social_media/resources/strings.dart';
 
 void main() async {
@@ -21,7 +21,7 @@ class MyApp extends StatelessWidget {
         // fontFamily: GoogleFonts.ubuntu().fontFamily,
       ),
       debugShowCheckedModeBanner: false,
-      home: NewFeedPage(),
+      home: LoginPage(),
     );
   }
 }

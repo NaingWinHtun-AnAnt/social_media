@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:social_media/data/models/social_model.dart';
 import 'package:social_media/data/models/social_model_impl.dart';
@@ -8,12 +10,15 @@ class AddNewPostBloc extends ChangeNotifier {
   /// states
   bool isDispose = false;
   bool isAddNewPostError = false;
+  bool isLoading = false;
   String description = "";
+  File? chosenImageFile;
 
   /// edit mode
   bool isEditMode = false;
   String userName = "";
   String profilePicture = "";
+  String? postImage;
   NewsFeedVO? mNewsFeed;
 
   /// models
@@ -34,6 +39,7 @@ class AddNewPostBloc extends ChangeNotifier {
       userName = newFeed.userName ?? "";
       profilePicture = newFeed.profilePicture ?? "";
       description = newFeed.description ?? "";
+      postImage = newFeed.postImage == "" ? null : newFeed.postImage;
       mNewsFeed = newFeed;
       _notifySafety();
     });
@@ -49,27 +55,55 @@ class AddNewPostBloc extends ChangeNotifier {
     description = postDescription;
   }
 
+  void onImageChosen(File imageFile) {
+    chosenImageFile = imageFile;
+    _notifySafety();
+  }
+
+  void onTapDeleteImage() {
+    postImage = null;
+    _notifySafety();
+    chosenImageFile = null;
+    _notifySafety();
+  }
+
   Future onCreateNewPost() {
     if (description.isEmpty) {
       isAddNewPostError = true;
       _notifySafety();
       return Future.error("Error");
     } else {
+      isLoading = true;
+      _notifySafety();
       isAddNewPostError = false;
-      return isEditMode ? _editPost() : _createNewPost();
+      if (isEditMode) {
+        return _editPost().then((value) {
+          isLoading = false;
+          _notifySafety();
+        });
+      } else {
+        return _createNewPost().then((value) {
+          isLoading = false;
+          _notifySafety();
+        });
+      }
     }
   }
 
   Future<void> _editPost() {
     mNewsFeed?.description = description;
+    mNewsFeed?.postImage = postImage;
     if (mNewsFeed != null) {
-      return _mSocialModel.editPost(mNewsFeed!);
+      return _mSocialModel.editPost(mNewsFeed!, chosenImageFile);
     } else {
       return Future.error("New Feed Null Error");
     }
   }
 
-  Future<void> _createNewPost() => _mSocialModel.createNewPost(description);
+  Future<void> _createNewPost() => _mSocialModel.createNewPost(
+        description,
+        chosenImageFile,
+      );
 
   void _notifySafety() {
     if (!isDispose) notifyListeners();

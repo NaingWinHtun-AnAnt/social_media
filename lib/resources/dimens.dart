@@ -17,5 +17,6 @@ const TEXT_HEADING_2X = 28.0;
 const TEXT_BIG = 32.0;
 
 /// App Specific
+const LOGIN_TOP_PADDING = 92.0;
 const ADD_NEW_POST_TEXT_FIELD_HEIGHT = 300.0;
 const POST_IMAGE_HEIGHT = 200.0;
