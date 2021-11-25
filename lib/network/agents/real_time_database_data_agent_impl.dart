@@ -25,7 +25,7 @@ class RealtimeDatabaseDataAgentImpl extends SocialDataAgent {
   var _firebaseStorage = FirebaseStorage.instance;
 
   /// authentication
-  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
 
   @override
   Stream<List<NewsFeedVO>> getNewsFeed() {
@@ -71,7 +71,7 @@ class RealtimeDatabaseDataAgentImpl extends SocialDataAgent {
 
   @override
   Future registerNewUser(UserVO newUser) {
-    return _auth
+    return _firebaseAuth
         .createUserWithEmailAndPassword(
           email: newUser.email ?? "",
           password: newUser.password ?? "",
@@ -89,5 +89,32 @@ class RealtimeDatabaseDataAgentImpl extends SocialDataAgent {
         .child(USERS)
         .child(registerUser.id ?? "")
         .set(registerUser.toJson());
+  }
+
+  @override
+  Future login(String email, String password) {
+    return _firebaseAuth.signInWithEmailAndPassword(
+      email: email,
+      password: password,
+    );
+  }
+
+  @override
+  bool isLogin() {
+    return _firebaseAuth.currentUser != null;
+  }
+
+  @override
+  UserVO getLoginUser() {
+    return UserVO(
+      id: _firebaseAuth.currentUser?.uid,
+      email: _firebaseAuth.currentUser?.email,
+      userName: _firebaseAuth.currentUser?.displayName,
+    );
+  }
+
+  @override
+  Future<void> logOut() {
+    return _firebaseAuth.signOut();
   }
 }

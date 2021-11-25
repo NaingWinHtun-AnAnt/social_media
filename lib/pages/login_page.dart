@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:social_media/blocs/login_bloc.dart';
+import 'package:social_media/pages/new_feed_page.dart';
 import 'package:social_media/pages/register_page.dart';
 import 'package:social_media/resources/dimens.dart';
 import 'package:social_media/resources/strings.dart';
@@ -31,71 +32,83 @@ class LoginPage extends StatelessWidget {
           ) =>
               Stack(
             children: [
-              Container(
-                padding: const EdgeInsets.only(
-                  top: LOGIN_TOP_PADDING,
-                  bottom: MARGIN_LARGE,
-                  left: MARGIN_XLARGE,
-                  right: MARGIN_XLARGE,
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text(
-                      LABEL_LOGIN,
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: TEXT_BIG,
+              SingleChildScrollView(
+                child: Container(
+                  padding: const EdgeInsets.only(
+                    top: LOGIN_TOP_PADDING,
+                    bottom: MARGIN_LARGE,
+                    left: MARGIN_XLARGE,
+                    right: MARGIN_XLARGE,
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text(
+                        LABEL_LOGIN,
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: TEXT_BIG,
+                        ),
                       ),
-                    ),
-                    const SizedBox(
-                      height: MARGIN_XXLARGE,
-                    ),
-                    Consumer(
-                      builder: (BuildContext context, LoginBloc bloc,
-                              Widget? child) =>
-                          LabelAndTextFieldView(
-                        label: LABEL_EMAIL,
-                        hint: HINT_EMAIL,
-                        onChanged: (value) => bloc.onEmailChanged(value),
+                      const SizedBox(
+                        height: MARGIN_XXLARGE,
                       ),
-                    ),
-                    const SizedBox(
-                      height: MARGIN_XLARGE,
-                    ),
-                    Consumer(
-                      builder: (BuildContext context, LoginBloc bloc,
-                              Widget? child) =>
-                          LabelAndTextFieldView(
-                        label: LABEL_PASSWORD,
-                        hint: HINT_PASSWORD,
-                        onChanged: (value) => bloc.onPasswordChanged(value),
-                        isSecure: true,
+                      Consumer(
+                        builder: (BuildContext context, LoginBloc bloc,
+                                Widget? child) =>
+                            LabelAndTextFieldView(
+                          label: LABEL_EMAIL,
+                          hint: HINT_EMAIL,
+                          onChanged: (value) => bloc.onEmailChanged(value),
+                        ),
                       ),
-                    ),
-                    const SizedBox(
-                      height: MARGIN_XXLARGE,
-                    ),
-                    Consumer(
-                      builder: (BuildContext context, LoginBloc bloc,
-                              Widget? child) =>
-                          ButtonView(
-                        text: LABEL_LOGIN, onTap: () => bloc.onTapLogin(),
-                        //     navigateToScreen(
-                        //   context,
-                        //   NewFeedPage(),
-                        // ),
+                      const SizedBox(
+                        height: MARGIN_XLARGE,
                       ),
-                    ),
-                    const SizedBox(
-                      height: MARGIN_LARGE,
-                    ),
-                    const ORView(),
-                    const SizedBox(
-                      height: MARGIN_LARGE,
-                    ),
-                    const RegisterTriggerView()
-                  ],
+                      Consumer(
+                        builder: (BuildContext context, LoginBloc bloc,
+                                Widget? child) =>
+                            LabelAndTextFieldView(
+                          label: LABEL_PASSWORD,
+                          hint: HINT_PASSWORD,
+                          onChanged: (value) => bloc.onPasswordChanged(value),
+                          isSecure: true,
+                        ),
+                      ),
+                      const SizedBox(
+                        height: MARGIN_XXLARGE,
+                      ),
+                      Consumer(
+                        builder: (BuildContext context, LoginBloc bloc,
+                                Widget? child) =>
+                            ButtonView(
+                          text: LABEL_LOGIN,
+                          onTap: () => bloc
+                              .onTapLogin()
+                              .then(
+                                (value) => navigateToScreen(
+                                  context,
+                                  NewFeedPage(),
+                                ),
+                              )
+                              .catchError(
+                                (error) => showSnackBarWithMessage(
+                                  context,
+                                  error.toString(),
+                                ),
+                              ),
+                        ),
+                      ),
+                      const SizedBox(
+                        height: MARGIN_LARGE,
+                      ),
+                      const ORView(),
+                      const SizedBox(
+                        height: MARGIN_LARGE,
+                      ),
+                      const RegisterTriggerView()
+                    ],
+                  ),
                 ),
               ),
               Visibility(

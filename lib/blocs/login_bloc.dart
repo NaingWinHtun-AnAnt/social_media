@@ -1,20 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:social_media/data/models/auth_model.dart';
+import 'package:social_media/data/models/auth_model_impl.dart';
 
 class LoginBloc extends ChangeNotifier {
+  /// states
   bool isDispose = false;
   bool isLoading = false;
   String email = "";
   String password = "";
 
-  void onTapLogin() {
+  /// models
+  final AuthModel _authModel = AuthModelImpl();
+
+  Future onTapLogin() {
     _showLoading();
-    Future.delayed(
-      Duration(
-        seconds: 2,
-      ),
-    ).then(
-      (value) => _hideLoading(),
-    );
+    return _authModel.login(email, password).whenComplete(
+          () => _hideLoading(),
+        );
   }
 
   void onEmailChanged(String email) {

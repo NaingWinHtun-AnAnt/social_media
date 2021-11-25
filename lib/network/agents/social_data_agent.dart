@@ -15,4 +15,12 @@ abstract class SocialDataAgent {
   Future<String> uploadFileToFirebaseStorage(File file);
 
   Future registerNewUser(UserVO user);
+
+  Future login(String email, String password);
+
+  bool isLogin();
+
+  UserVO getLoginUser();
+
+  Future<void> logOut();
 }

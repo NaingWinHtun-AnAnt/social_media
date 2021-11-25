@@ -1,9 +1,12 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:social_media/data/models/auth_model.dart';
+import 'package:social_media/data/models/auth_model_impl.dart';
 import 'package:social_media/data/models/social_model.dart';
 import 'package:social_media/data/models/social_model_impl.dart';
 import 'package:social_media/data/vos/news_feed_vo.dart';
+import 'package:social_media/data/vos/user_vo.dart';
 import 'package:social_media/resources/images.dart';
 
 class AddNewPostBloc extends ChangeNotifier {
@@ -19,12 +22,15 @@ class AddNewPostBloc extends ChangeNotifier {
   String userName = "";
   String profilePicture = "";
   String? postImage;
-  NewsFeedVO? mNewsFeed;
+  NewsFeedVO? newsFeed;
+  UserVO? user;
 
   /// models
   final SocialModel _mSocialModel = SocialModelImpl();
+  final AuthModel _mAuthModel = AuthModelImpl();
 
   AddNewPostBloc(int? postId) {
+    user = _mAuthModel.getLoginUser();
     if (postId != null) {
       isEditMode = true;
       _prePopulateDataForEditMode(postId);
@@ -40,13 +46,13 @@ class AddNewPostBloc extends ChangeNotifier {
       profilePicture = newFeed.profilePicture ?? "";
       description = newFeed.description ?? "";
       postImage = newFeed.postImage == "" ? null : newFeed.postImage;
-      mNewsFeed = newFeed;
+      newsFeed = newFeed;
       _notifySafety();
     });
   }
 
   void _prePopulateDataForAddNewPost() {
-    userName = "Naing Win Htun";
+    userName = user?.userName ?? "";
     profilePicture = MY_PROFILE_IMAGE;
     _notifySafety();
   }
@@ -91,10 +97,10 @@ class AddNewPostBloc extends ChangeNotifier {
   }
 
   Future<void> _editPost() {
-    mNewsFeed?.description = description;
-    mNewsFeed?.postImage = postImage;
-    if (mNewsFeed != null) {
-      return _mSocialModel.editPost(mNewsFeed!, chosenImageFile);
+    newsFeed?.description = description;
+    newsFeed?.postImage = postImage;
+    if (newsFeed != null) {
+      return _mSocialModel.editPost(newsFeed!, chosenImageFile);
     } else {
       return Future.error("New Feed Null Error");
     }

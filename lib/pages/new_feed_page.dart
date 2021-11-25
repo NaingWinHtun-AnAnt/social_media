@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:social_media/blocs/news_feed_bloc.dart';
 import 'package:social_media/pages/add_new_post_page.dart';
+import 'package:social_media/pages/login_page.dart';
 import 'package:social_media/resources/dimens.dart';
 import 'package:social_media/resources/strings.dart';
+import 'package:social_media/utils/extensions.dart';
 import 'package:social_media/viewitems/news_feed_item_view.dart';
 
 class NewFeedPage extends StatelessWidget {
@@ -42,7 +44,29 @@ class NewFeedPage extends StatelessWidget {
                   size: MARGIN_LARGE,
                 ),
               ),
-            )
+            ),
+            Consumer(
+              builder:
+                  (BuildContext context, NewsFeedBloc bloc, Widget? child) =>
+                      GestureDetector(
+                onTap: () => bloc.onTapLogout().then(
+                      (value) => navigateToScreen(
+                        context,
+                        LoginPage(),
+                      ),
+                    ),
+                child: Container(
+                  margin: EdgeInsets.only(
+                    right: MARGIN_LARGE,
+                  ),
+                  child: Icon(
+                    Icons.logout,
+                    color: Colors.grey,
+                    size: MARGIN_LARGE,
+                  ),
+                ),
+              ),
+            ),
           ],
         ),
         body: Container(
