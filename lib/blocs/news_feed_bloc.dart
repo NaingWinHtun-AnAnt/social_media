@@ -1,4 +1,5 @@
 import 'package:flutter/foundation.dart';
+import 'package:social_media/analytics/firebase_analytics_tracker.dart';
 import 'package:social_media/data/models/auth_model.dart';
 import 'package:social_media/data/models/auth_model_impl.dart';
 import 'package:social_media/data/models/social_model.dart';
@@ -22,6 +23,9 @@ class NewsFeedBloc extends ChangeNotifier {
         notifyListeners();
       }
     });
+
+    /// log home screen reach on firebase analytics
+    FirebaseAnalyticsTracker().logEvent(homeScreenReached);
   }
 
   void onTapDelete(int postId) async {

@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:social_media/analytics/firebase_analytics_tracker.dart';
 import 'package:social_media/data/models/auth_model.dart';
 import 'package:social_media/data/models/auth_model_impl.dart';
 import 'package:social_media/data/models/social_model.dart';
@@ -38,6 +39,9 @@ class AddNewPostBloc extends ChangeNotifier {
       isEditMode = false;
       _prePopulateDataForAddNewPost();
     }
+
+    /// log add new screen reach on firebase analytics
+    _sendAnalyticsData(addNewPostScreenReached);
   }
 
   void _prePopulateDataForEditMode(int postId) {
@@ -86,11 +90,20 @@ class AddNewPostBloc extends ChangeNotifier {
         return _editPost().then((value) {
           isLoading = false;
           _notifySafety();
+
+          /// log edit post action on firebase analytics
+          _sendAnalyticsData(
+            editPostAction,
+            parameters: {postId: newsFeed?.id ?? ""},
+          );
         });
       } else {
         return _createNewPost().then((value) {
           isLoading = false;
           _notifySafety();
+
+          /// log add new post action on firebase analytics
+          _sendAnalyticsData(addNewPostAction);
         });
       }
     }
@@ -110,6 +123,10 @@ class AddNewPostBloc extends ChangeNotifier {
         description,
         chosenImageFile,
       );
+
+  void _sendAnalyticsData(String name, {Map<String, dynamic>? parameters}) {
+    FirebaseAnalyticsTracker().logEvent(name, parameters: parameters);
+  }
 
   void _notifySafety() {
     if (!isDispose) notifyListeners();
